@@ -43,8 +43,8 @@ class TransactionServiceTest {
 
     @BeforeEach
     void setUp() {
-        var sourceAccount = new Account(1L, "53-68-92", "78901234", 458.1, "Some Bank", "John");
-        var targetAccount = new Account(2L, "67-41-18", "48573590", 64.9, "Some Other Bank", "Major");
+        var sourceAccount = new Account(1L, "53-68-92", "50002363", 458.1, "Some Bank", "John", 0.0, 0.0);
+        var targetAccount = new Account(2L, "67-41-18", "22503139", 64.9, "Some Other Bank", "Major", 0.0, 0.0);
 
         when(accountRepository.findBySortCodeAndAccountNumber("53-68-92", "78901234"))
                 .thenReturn(Optional.of(sourceAccount));
@@ -56,17 +56,17 @@ class TransactionServiceTest {
     void whenTransactionDetails_thenTransferShouldBeDenied() {
         var sourceAccount = new AccountInput();
         sourceAccount.setSortCode("53-68-92");
-        sourceAccount.setAccountNumber("78901234");
+        sourceAccount.setAccountNumber("50002363");
 
         var targetAccount = new AccountInput();
-        targetAccount.setSortCode("67-41-18");
-        targetAccount.setAccountNumber("48573590");
+        targetAccount.setSortCode("67-41-19");
+        targetAccount.setAccountNumber("22503139");
 
         var input = new TransactionInput();
         input.setSourceAccount(sourceAccount);
         input.setTargetAccount(targetAccount);
         input.setAmount(50);
-        input.setReference("My reference");
+        input.setReference("Açıklama");
 
         boolean isComplete = transactionService.makeTransfer(input);
 
@@ -77,17 +77,17 @@ class TransactionServiceTest {
     void whenTransactionDetailsAndAmountTooLarge_thenTransferShouldBeDenied() {
         var sourceAccount = new AccountInput();
         sourceAccount.setSortCode("53-68-92");
-        sourceAccount.setAccountNumber("78901234");
+        sourceAccount.setAccountNumber("50002363");
 
         var targetAccount = new AccountInput();
         targetAccount.setSortCode("67-41-18");
-        targetAccount.setAccountNumber("48573590");
+        targetAccount.setAccountNumber("22503139");
 
         var input = new TransactionInput();
         input.setSourceAccount(sourceAccount);
         input.setTargetAccount(targetAccount);
-        input.setAmount(10000);
-        input.setReference("My reference");
+        input.setAmount(1000000000);
+        input.setReference("Açıklama");
 
         boolean isComplete = transactionService.makeTransfer(input);
 

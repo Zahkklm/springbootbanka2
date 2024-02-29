@@ -6,25 +6,24 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.7.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
-	<groupId>com.example.paul</groupId>
+	<groupId>com.prj.calisma</groupId>
 	<artifactId>Banking</artifactId>
 	<version>0.0.1</version>
-	<name>Banking</name>
-	<description>Demo banking project for Spring Boot</description>
+	<name>Bankacılık</name>
+	<description>Örnek banka uygulaması</description>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>17</java.version>		
 	</properties>
 
 	<dependencies>
 
-		<dependency>
+		 <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -52,7 +51,28 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.4.0</version>
+		</dependency>
 	</dependencies>
+   
+
+
+
 
 	<build>
 		<plugins>

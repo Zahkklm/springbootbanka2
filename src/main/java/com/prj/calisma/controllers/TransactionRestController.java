@@ -5,9 +5,16 @@ import com.prj.calisma.models.Account;
 import com.prj.calisma.services.AccountService;
 import com.prj.calisma.services.TransactionService;
 import com.prj.calisma.utils.*;
+
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.Advisor;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
+import org.springframework.aop.interceptor.PerformanceMonitorInterceptor;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +28,10 @@ import java.util.Map;
 
 import static com.prj.calisma.constants.constants.*;
 
+
 @RestController
 @RequestMapping("api/v1")
+
 public class TransactionRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionRestController.class);
@@ -42,7 +51,6 @@ public class TransactionRestController {
     public ResponseEntity<?> makeTransfer(
             @Valid @RequestBody TransactionInput transactionInput) {
         if (InputValidator.isSearchTransactionValid(transactionInput)) {
-//            new Thread(() -> transactionService.makeTransfer(transactionInput));
             boolean isComplete = transactionService.makeTransfer(transactionInput);
             return new ResponseEntity<>(isComplete, HttpStatus.OK);
         } else {
@@ -55,15 +63,12 @@ public class TransactionRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> withdraw(
             @Valid @RequestBody WithdrawInput withdrawInput) {
-        LOGGER.debug("Triggered AccountRestController.withdrawInput");
+        LOGGER.debug("ÇALIŞTIRILDI: AccountRestController.withdrawInput");
 
-        // Validate input
         if (InputValidator.isSearchCriteriaValid(withdrawInput)) {
-            // Attempt to retrieve the account information
             Account account = accountService.getAccount(
                     withdrawInput.getSortCode(), withdrawInput.getAccountNumber());
 
-            // Return the account details, or warn that no account was found for given input
             if (account == null) {
                 return new ResponseEntity<>(NO_ACCOUNT_FOUND, HttpStatus.OK);
             } else {
@@ -84,14 +89,11 @@ public class TransactionRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deposit(
             @Valid @RequestBody DepositInput depositInput) {
-        LOGGER.debug("Triggered AccountRestController.depositInput");
+        LOGGER.debug("ÇALIŞTIRILDI: AccountRestController.depositInput");
 
-        // Validate input
         if (InputValidator.isAccountNoValid(depositInput.getTargetAccountNo())) {
-            // Attempt to retrieve the account information
             Account account = accountService.getAccount(depositInput.getTargetAccountNo());
 
-            // Return the account details, or warn that no account was found for given input
             if (account == null) {
                 return new ResponseEntity<>(NO_ACCOUNT_FOUND, HttpStatus.OK);
             } else {
@@ -102,38 +104,91 @@ public class TransactionRestController {
             return new ResponseEntity<>(INVALID_SEARCH_CRITERIA, HttpStatus.BAD_REQUEST);
         }
     }
-    /* 
-    @PostMapping(value = "/mevduat",
+   
+    @PostMapping(value = "/vade",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> mevduat(
-        @Valid @RequestBody DepositInput depositInput) {
-        LOGGER.debug("Triggered ??");
-
-        // Validate input
-        if (InputValidator.isAccountNoValid(mevduatInput.getTargetAccountNo())) {
-            // Attempt to retrieve the account information
-            Account account = accountService.getAccount(depositInput.getTargetAccountNo());
-
-            // Return the account details, or warn that no account was found for given input
+    public ResponseEntity<?> vade(
+        @Valid @RequestBody VadeInput vadeInput) {
+        LOGGER.debug("ÇALIŞTIRILDI: AccountRestController.VadeInput");
+        // Girdi doğrulaması
+        if (InputValidator.isAccountNoValid(vadeInput.getTargetAccountNo())) {
+            Account account = accountService.getAccount(vadeInput.getTargetAccountNo());
+            // Hesap mevcutsa hesap bilgilerini döndür
             if (account == null) {
                 return new ResponseEntity<>(NO_ACCOUNT_FOUND, HttpStatus.OK);
-            } else {
-                if(transactionService.isAmountAvailable(mevduatInput.getAmount(), account.getCurrentBalance())){
+            } 
+            else {
+                if(transactionService.isAmountAvailable(vadeInput.getAmount(), account.getCurrentBalance())){
                     // Yeterli miktarda parası varsa olacaklar
-                    transactionService.updateAccountBalance(account, depositInput.getAmount(), ACTION.DEPOSIT);
-                    // TODO Mevduat İşlemleri
-
+                    transactionService.updateAccountBalance(account, vadeInput.getVade(), ACTION.VADE);
+                    // TODO Mevduat İşlemleri: her ay faiz yatırılsın
+                    
                     
                     return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
-                }
-                
+                }                
                 return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED, HttpStatus.OK);
             }
         } else {
             return new ResponseEntity<>(INVALID_SEARCH_CRITERIA, HttpStatus.BAD_REQUEST);
         }
-    }*/
+    }
+
+    @PostMapping(value = "/credit",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> credit(
+            @Valid @RequestBody CreditInput creditInput) {
+        LOGGER.debug("ÇALIŞTIRILDI: AccountRestController.creditInput");
+
+        // Girdi doğrulaması
+        if (
+            InputValidator.isAccountNoValid(creditInput.getOwnerAccountId())         
+               ) {
+            Account account = accountService.getAccount(
+               creditInput.getOwnerAccountId()
+                );
+
+            if (account == null) {
+                return new ResponseEntity<>(NO_ACCOUNT_FOUND, HttpStatus.OK);
+            } else {
+                transactionService.updateAccountBalance(account, creditInput.getCreditAmount(), ACTION.DEPOSIT);
+                transactionService.updateAccountCredit(account, -creditInput.getCreditAmount(), ACTION.CREDIT);
+                return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>(INVALID_SEARCH_CRITERIA, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/dolar",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> dolar(
+            @Valid @RequestBody DolarInput dolarInput) {
+        LOGGER.debug("ÇALIŞTIRILDI: AccountRestController.dolarInput");
+
+        // Girdi doğrulaması
+        if (InputValidator.isAccountNoValid(dolarInput.getSourceAccountNo())) {
+            Account account = accountService.getAccount(
+                    dolarInput.getSourceAccountNo());
+
+            if (account == null) {
+                return new ResponseEntity<>(NO_ACCOUNT_FOUND, HttpStatus.OK);
+            } else {
+                if (transactionService.isAmountAvailable(dolarInput.getAmount(), account.getCurrentBalance())) {
+                    transactionService.updateAccountBalance(account, dolarInput.getAmount(), ACTION.WITHDRAW); // TL olarak çek
+                    
+                    final double DOLAR_KUR = 0.037; // 12.08.2023 TL-DOLAR kuru
+                    transactionService.updateDolar(account, dolarInput.getAmount() * DOLAR_KUR, ACTION.DEPOSIT); // DOLAR olarak yatır
+                    return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+                }
+                return new ResponseEntity<>(INSUFFICIENT_ACCOUNT_BALANCE, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>(INVALID_SEARCH_CRITERIA, HttpStatus.BAD_REQUEST);
+        }
+    }
     
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -34,11 +34,11 @@ class AccountServiceTest {
 
     @Test
     void shouldReturnAccountBySortCodeAndAccountNumberWhenPresent() {
-        var account = new Account(1L, "53-68-92", "78901234", 10.1, "Some Bank", "John");
-        when(accountRepository.findBySortCodeAndAccountNumber("53-68-92", "78901234"))
+        var account = new Account(1L, "82-53-56", "78901234", 10.1, "Some Bank", "John", 0.0, 0.0);
+        when(accountRepository.findBySortCodeAndAccountNumber("82-53-56", "78901234"))
                 .thenReturn(Optional.of(account));
 
-        var result = underTest.getAccount("53-68-92", "78901234");
+        var result = underTest.getAccount("82-53-56", "70002363");
 
         assertThat(result.getOwnerName()).isEqualTo(account.getOwnerName());
         assertThat(result.getSortCode()).isEqualTo(account.getSortCode());
@@ -47,8 +47,8 @@ class AccountServiceTest {
 
     @Test
     void shouldReturnTransactionsForAccount() {
-        var account = new Account(1L, "53-68-92", "78901234", 10.1, "Some Bank", "John");
-        when(accountRepository.findBySortCodeAndAccountNumber("53-68-92", "78901234"))
+        var account = new Account(1L, "82-53-56", "70002363", 10.1, "Çiftçi Bankası", "Mehmet", 0.0, 0.0);
+        when(accountRepository.findBySortCodeAndAccountNumber("82-53-56", "70002363"))
                 .thenReturn(Optional.of(account));
         var transaction1 = new Transaction();
         var transaction2 = new Transaction();
@@ -57,7 +57,7 @@ class AccountServiceTest {
         when(transactionRepository.findBySourceAccountIdOrderByInitiationDate(account.getId()))
                 .thenReturn(List.of(transaction1, transaction2));
 
-        var result = underTest.getAccount("53-68-92", "78901234");
+        var result = underTest.getAccount("82-53-56", "70002363");
 
         assertThat(result.getTransactions()).hasSize(2);
         assertThat(result.getTransactions()).extracting("reference").containsExactly("a", "b");
@@ -65,10 +65,10 @@ class AccountServiceTest {
 
     @Test
     void shouldReturnNullWhenAccountBySortCodeAndAccountNotFound() {
-        when(accountRepository.findBySortCodeAndAccountNumber("53-68-92", "78901234"))
+        when(accountRepository.findBySortCodeAndAccountNumber("82-53-56", "70002363"))
                 .thenReturn(Optional.empty());
 
-        var result = underTest.getAccount("53-68-92", "78901234");
+        var result = underTest.getAccount("82-53-56", "70002363");
 
         assertThat(result).isNull();
     }

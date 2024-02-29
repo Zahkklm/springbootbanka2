@@ -33,21 +33,21 @@ public class AccountRestController {
         this.accountService = accountService;
     }
 
+    // HESAP NO - SORT NO
+
     @PostMapping(value = "/accounts",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> checkAccountBalance(
-            // TODO In the future support searching by card number in addition to sort code and account number
             @Valid @RequestBody AccountInput accountInput) {
         LOGGER.debug("Triggered AccountRestController.accountInput");
 
-        // Validate input
+        // Girdi doğrulaması
         if (InputValidator.isSearchCriteriaValid(accountInput)) {
-            // Attempt to retrieve the account information
             Account account = accountService.getAccount(
                     accountInput.getSortCode(), accountInput.getAccountNumber());
 
-            // Return the account details, or warn that no account was found for given input
+            // Hesap mevcutsa hesap bilgilerini döndür
             if (account == null) {
                 return new ResponseEntity<>(constants.NO_ACCOUNT_FOUND, HttpStatus.OK);
             } else {
@@ -64,19 +64,18 @@ public class AccountRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createAccount(
             @Valid @RequestBody CreateAccountInput createAccountInput) {
-        LOGGER.debug("Triggered AccountRestController.createAccountInput");
+        LOGGER.debug("ÇALIŞTIRILDI: AccountRestController.createAccountInput");
 
-        // Validate input
+        // Girdi doğrulaması
         if (InputValidator.isCreateAccountCriteriaValid(createAccountInput)) {
-            // Attempt to retrieve the account information
             Account account = accountService.createAccount(
                     createAccountInput.getBankName(), createAccountInput.getOwnerName());
 
-            // Return the account details, or warn that no account was found for given input
+            // Hesap mevcutsa hesap bilgilerini döndür
             if (account == null) {
                 return new ResponseEntity<>(constants.CREATE_ACCOUNT_FAILED, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(account, HttpStatus.OK);
+                return new ResponseEntity<>(account, HttpStatus.OK); // 200 HTTP Başarı Kodu
             }
         } else {
             return new ResponseEntity<>(constants.INVALID_SEARCH_CRITERIA, HttpStatus.BAD_REQUEST);

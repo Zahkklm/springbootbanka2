@@ -5,10 +5,10 @@ import java.util.Objects;
 
 public class CreateAccountInput {
 
-    @NotBlank(message = "Bank name is mandatory")
+    @NotBlank(message = "Banka ismi boş bırakılamaz.")
     private String bankName;
 
-    @NotBlank(message = "Owner name is mandatory")
+    @NotBlank(message = "Kullanıcı ismi boş bırakılamaz.")
     private String ownerName;
 
 
@@ -30,6 +30,7 @@ public class CreateAccountInput {
         this.ownerName = ownerName;
     }
 
+    // Döndürülen string SQL Injection'a karşı test edilecek
     @Override
     public String toString() {
         return "CreateAccountInput{" +

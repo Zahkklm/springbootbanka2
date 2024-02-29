@@ -33,7 +33,7 @@ class TransactionRestControllerTest {
     @Test
     void givenInvalidInput_whenMakeTransfer_thenVerifyBadRequest() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/transactions")
-                .content("{ \"sourceAccount\": {\"sortCode\": \"53-68-92\", \"accountNumber\": \"73084635\" }, \"targetAccount\": {\"sortCode\": \"65-93-37\", \"accountNumber\": \"21956204\"}, \"amount\": -10}")
+                .content("{ \"sourceAccount\": {\"sortCode\": \"82-53-56\", \"accountNumber\": \"70002363\" }, \"targetAccount\": {\"sortCode\": \"65-93-37\", \"accountNumber\": \"21956204\"}, \"amount\": -10}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
@@ -41,7 +41,7 @@ class TransactionRestControllerTest {
     @Test
     void givenNoAccountForInput_whenMakeTransfer_thenVerifyOk() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/transactions")
-                .content("{\"sourceAccount\": {\"sortCode\": \"53-68-92\", \"accountNumber\": \"73084635\"}, \"targetAccount\": {\"sortCode\": \"65-93-37\", \"accountNumber\": \"21956204\"}, \"amount\": 105.0, \"reference\": \"My ref\", \"latitude\": 66.23423423, \"longitude\": 105.234234}")
+                .content("{\"sourceAccount\": {\"sortCode\": \"82-53-56\", \"accountNumber\": \"70002363\"}, \"targetAccount\": {\"sortCode\": \"65-93-37\", \"accountNumber\": \"21956204\"}, \"amount\": 105.0, \"reference\": \"My ref\", \"latitude\": 66.23423423, \"longitude\": 105.234234}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

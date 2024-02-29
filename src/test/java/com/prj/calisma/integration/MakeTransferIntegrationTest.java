@@ -19,27 +19,22 @@ class MakeTransferIntegrationTest {
 
     @Test
     void givenTransactionDetails_whenMakeTransaction_thenVerifyTransactionIsProcessed() {
-        // given
         var sourceAccount = new AccountInput();
-        sourceAccount.setSortCode("53-68-92");
-        sourceAccount.setAccountNumber("73084635");
+        sourceAccount.setSortCode("82-53-56");
+        sourceAccount.setAccountNumber("70002363");
 
         var targetAccount = new AccountInput();
-        targetAccount.setSortCode("65-93-37");
-        targetAccount.setAccountNumber("21956204");
+        targetAccount.setSortCode("72-19-20");
+        targetAccount.setAccountNumber("72503139");
 
         var input = new TransactionInput();
         input.setSourceAccount(sourceAccount);
         input.setTargetAccount(targetAccount);
-        input.setAmount(27.5);
-        input.setReference("My reference");
-        input.setLatitude(45.0000000);
-        input.setLongitude(90.0000000);
+        input.setAmount(55.0);
+        input.setReference("Açıklama");
 
-        // when
         var body = transactionRestController.makeTransfer(input).getBody();
 
-        // then
         var isComplete = (Boolean) body;
         assertThat(isComplete).isTrue();
     }

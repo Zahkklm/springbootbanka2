@@ -19,19 +19,24 @@ class CheckBalanceIntegrationTest {
 
     @Test
     void givenAccountDetails_whenCheckingBalance_thenVerifyAccountCorrect() {
-        // given
         var input = new AccountInput();
-        input.setSortCode("53-68-92");
-        input.setAccountNumber("73084635");
-
-        // when
+        input.setSortCode("82-53-56");
+        input.setAccountNumber("70002363");
         var body = accountRestController.checkAccountBalance(input).getBody();
-
-        // then
         var account = (Account) body;
         assertThat(account).isNotNull();
-        assertThat(account.getOwnerName()).isEqualTo("Paul Dragoslav");
-        assertThat(account.getSortCode()).isEqualTo("53-68-92");
-        assertThat(account.getAccountNumber()).isEqualTo("73084635");
+        assertThat(account.getOwnerName()).isEqualTo("ÖzgürP");
+        assertThat(account.getSortCode()).isEqualTo("82-53-56");
+        assertThat(account.getAccountNumber()).isEqualTo("70002363");
+
+        var input2 = new AccountInput();
+        input.setSortCode("72-19-20");
+        input.setAccountNumber("72503139");
+        var body2 = accountRestController.checkAccountBalance(input).getBody();
+        var account2 = (Account) body;
+        assertThat(account).isNotNull();
+        assertThat(account.getOwnerName()).isEqualTo("BarışP");
+        assertThat(account.getSortCode()).isEqualTo("72-19-20");
+        assertThat(account.getAccountNumber()).isEqualTo("72503139");
     }
 }

@@ -4,15 +4,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.Objects;
 
-public class DepositInput {
+public class VadeInput {
 
-    @NotBlank(message = "Gönderilecek hesap numarası boş bırakılamaz.")
+    @NotBlank(message = "Hesap no boş bırakılamaz.")
     private String targetAccountNo;
 
-    @Positive(message = "Gönderilen miktar pozitif sayı olmalıdır.")
+    @Positive(message = "Gönderilecek miktar pozitif olmalıdır.")
     private double amount;
+    private int vade;
 
-    public DepositInput() {
+    public VadeInput() {
     }
 
     public String getTargetAccountNo() {
@@ -22,20 +23,25 @@ public class DepositInput {
     public void setTargetAccountNo(String targetAccountNo) {
         this.targetAccountNo = targetAccountNo;
     }
-
     public double getAmount() {
         return amount;
     }
-
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+    public int getVade(){
+        return vade;
+    }
+    public void setVade(int vade){
+        this.vade = vade;
     }
 
     @Override
     public String toString() {
-        return "DepositInput{" +
+        return "VadeInput{" +
                 "targetAccountNo='" + targetAccountNo + '\'' +
                 ", amount='" + amount + '\'' +
+                ", vade='" + vade + '\'' +
                 '}';
     }
 
@@ -43,7 +49,7 @@ public class DepositInput {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DepositInput that = (DepositInput) o;
+        VadeInput that = (VadeInput) o;
         return Objects.equals(targetAccountNo, that.targetAccountNo) &&
                 Objects.equals(amount, that.amount);
     }

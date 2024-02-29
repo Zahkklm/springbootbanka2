@@ -1,17 +1,16 @@
 package com.prj.calisma.models;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-// TODO Add support for Bank charges, currency conversion, setup repeat payment/ standing order
 @Entity
 @Table(name = "transaction", schema = "online_bank")
 
 @SequenceGenerator(name = "transaction_seq", sequenceName = "transaction_sequence", schema = "online_bank", initialValue = 5)
 public class Transaction {
-
     @Id
-
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
     private long id;
 
@@ -29,9 +28,9 @@ public class Transaction {
 
     private String reference;
 
-    private Double latitude;
+    private double creditAmount;
 
-    private Double longitude;
+    private double dolar;
 
     public Transaction() {}
 
@@ -83,18 +82,21 @@ public class Transaction {
     public void setReference(String reference) {
         this.reference = reference;
     }
-    public Double getLatitude() {
-        return latitude;
+
+    public double getCreditAmount() {
+        return creditAmount;
     }
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setCreditAmount(double creditAmount) {
+        this.creditAmount = creditAmount;
     }
-    public Double getLongitude() {
-        return longitude;
+
+    public double getDolar() {
+        return dolar;
     }
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setDolar(double dolar) {
+        this.dolar = dolar;
     }
+
 
     @Override
     public String toString() {
@@ -106,6 +108,8 @@ public class Transaction {
                 ", initiationDate=" + initiationDate +
                 ", completionDate=" + completionDate +
                 ", reference='" + reference + '\'' +
+                ", credit='" + creditAmount + '\'' +
+                ", dolar='" + dolar + '\'' +
                 '}';
     }
 }

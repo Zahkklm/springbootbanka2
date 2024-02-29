@@ -5,14 +5,14 @@ import java.util.regex.Pattern;
 public class constants {
 
     public static final String SUCCESS =
-            "Operation completed successfully";
+            "İşlem başarıyla tamamlandı.";
     public static final String NO_ACCOUNT_FOUND =
-            "Unable to find an account matching this sort code and account number";
+            "Hesap no ve Sort kod uyuşan bir hesap bulunamadı.";
     public static final String INVALID_SEARCH_CRITERIA =
-            "The provided sort code or account number did not match the expected format";
+            "Girilen sort kod ve hesap no istenen biçimde değil.";
 
     public static final String INSUFFICIENT_ACCOUNT_BALANCE =
-            "Your account does not have sufficient balance";
+            "Yetersiz bakiye";
 
     public static final String SORT_CODE_PATTERN_STRING = "[0-9]{2}-[0-9]{2}-[0-9]{2}";
 
@@ -21,7 +21,7 @@ public class constants {
     public static final Pattern ACCOUNT_NUMBER_PATTERN = Pattern.compile("^[0-9]{8}$");
 
     public static final String INVALID_TRANSACTION =
-            "Account information is invalid or transaction has been denied for your protection. Please try again.";
+            "Hesap bilgisi geçersiz veya güvenlik sebeplerinden dolayı işlem reddedildi.";
     public static final String CREATE_ACCOUNT_FAILED =
-            "Error happened during creating new account";
+            "Hesap oluşturma sırasında bilinmeyen bir hata meydana geldi.";
 }

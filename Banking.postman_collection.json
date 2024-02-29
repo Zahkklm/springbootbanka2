@@ -159,6 +159,38 @@
 				}
 			},
 			"response": []
+		},
+
+		{
+			"name": "Credit",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ownerAccountID\": \"35-16-67\",\n\t\"accountNumber\": \"95753174\",\n    \"paymentorwithdraw\": ÖDEME\n, \"creditAmount\": 100.00\n}\n"
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/credit",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"credit"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

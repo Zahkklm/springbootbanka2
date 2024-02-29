@@ -40,7 +40,7 @@ public class AccountService {
 
     public Account createAccount(String bankName, String ownerName) {
         CodeGenerator codeGenerator = new CodeGenerator();
-        Account newAccount = new Account(bankName, ownerName, codeGenerator.generateSortCode(), codeGenerator.generateAccountNumber(), 0.00);
+        Account newAccount = new Account(bankName, ownerName, codeGenerator.generateSortCode(), codeGenerator.generateAccountNumber(), 0.00, 0.00, 0.00);
         return accountRepository.save(newAccount);
     }
 }

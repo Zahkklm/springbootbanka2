@@ -5,10 +5,10 @@ import java.util.Objects;
 
 public class AccountInput {
 
-    @NotBlank(message = "Sort code is mandatory")
+    @NotBlank(message = "Sort kod zorunludur.")
     private String sortCode;
 
-    @NotBlank(message = "Account number is mandatory")
+    @NotBlank(message = "Hesap no zorunludur.")
     private String accountNumber;
 
     public AccountInput() {}

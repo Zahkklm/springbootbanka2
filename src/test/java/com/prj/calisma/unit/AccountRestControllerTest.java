@@ -36,7 +36,7 @@ class AccountRestControllerTest {
     @Test
     void givenInvalidInput_whenCheckingBalance_thenVerifyBadRequest() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/accounts")
-                .content("{\"sortCode\": \"53-68\",\"accountNumber\": \"78934\"}")
+                .content("{\"sortCode\": \"53-56\",\"accountNumber\": \"78934\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
@@ -46,7 +46,7 @@ class AccountRestControllerTest {
         given(accountService.getAccount(null, null)).willReturn(null);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/accounts")
-                .content("{\"sortCode\": \"53-68-92\",\"accountNumber\": \"78901234\"}")
+                .content("{\"sortCode\": \"82-53-56\",\"accountNumber\": \"78901234\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -54,10 +54,10 @@ class AccountRestControllerTest {
     @Test
     void givenAccountDetails_whenCheckingBalance_thenVerifyOk() throws Exception {
         given(accountService.getAccount(null, null)).willReturn(
-                new Account(1L, "53-68-92", "78901234", 10.1, "Some Bank", "John"));
+                new Account(1L, "82-53-56", "78901234", 10.1, "Çiftçi Bankası", "SüleymanP", 0.0, 0.0));
 
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/accounts")
-                .content("{\"sortCode\": \"53-68-92\",\"accountNumber\": \"78901234\"}")
+                .content("{\"sortCode\": \"82-53-56\",\"accountNumber\": \"78901234\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNoContent())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));

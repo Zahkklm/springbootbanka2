@@ -6,9 +6,8 @@ import java.util.Objects;
 public class WithdrawInput extends AccountInput{
     String sortCode;
     String accountNumber;
-
-    // Prevent fraudulent transfers attempting to abuse currency conversion errors
-    @Positive(message = "Transfer amount must be positive")
+    
+    @Positive(message = "Çekilecek miktar pozitif olmalıdır")
     private double amount;
 
     public WithdrawInput() {
